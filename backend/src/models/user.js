@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcryptjs = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -56,5 +57,15 @@ userSchema.set("toJSON", {
         delete ret._id;
     },
 })
+
+// Hash the plain text passwords before saving
+userSchema.pre("save", async function (next) {
+    const user = this;
+    if (user.isModified("passwordHash")) {
+        user.passwordHash = await bcryptjs.hash(user.passwordHash, 10);
+    }
+
+    next();
+});
 
 exports.User = mongoose.model('User', userSchema);

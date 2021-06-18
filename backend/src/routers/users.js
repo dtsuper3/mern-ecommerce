@@ -12,7 +12,7 @@ router.post("/register", registerValidator(), async (req, res) => {
     // If some error occurs, then this
     // block of code will run
     if (!errorsResult.isEmpty()) {
-        console.error(errorsResult.errors);
+        // console.error(errorsResult.errors);
         return res.status(404).json({
             status: false,
             message: "User cannot be created!",
@@ -33,12 +33,11 @@ router.post("/register", registerValidator(), async (req, res) => {
     } = req.body;
 
     try {
-        const passwordHash = bcryptjs.hashSync(password, 10);
         let user = new User({
             name,
             email,
             phone,
-            passwordHash,
+            passwordHash: password,
             isAdmin,
             street,
             apartment,
@@ -56,7 +55,7 @@ router.post("/register", registerValidator(), async (req, res) => {
         res.status(200).json({
             success: true,
             message: "User register successfully",
-            data: user
+            data: { user }
         })
     } catch (error) {
         console.error(error.message)

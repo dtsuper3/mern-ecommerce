@@ -4,20 +4,20 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-require("dotenv/config");
 const api = process.env.API_URL;
-const PORT = process.env.PORT || 3200;
-const productRouter = require("./src/routers/products");
-const categoriesRouter = require("./src/routers/categories");
-const usersRouter = require("./src/routers/users");
-const orderRouter = require("./src/routers/orders");
-const authJwt = require('./src/helpers/jwt');
-const errorHandler = require('./src/helpers/error-handler');
+const productRouter = require("./routers/products");
+const categoriesRouter = require("./routers/categories");
+const usersRouter = require("./routers/users");
+const orderRouter = require("./routers/orders");
+const authJwt = require('./helpers/jwt');
+const errorHandler = require('./helpers/error-handler');
 
 app.use(cors());
 app.options("*", cors());
 app.use(express.json());
-app.use(morgan("tiny"));
+if (process.env.ENV !== "test") {
+    app.use(morgan("tiny"));
+}
 app.use(authJwt());
 // console.log(path.join(__dirname, 'public/uploads'))
 // app.use(express.static(path.join(__dirname, '/public')));
@@ -38,8 +38,7 @@ app.use(errorHandler)
 mongoose.connect(process.env.MONGODB_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true,
-    dbName: "ecommerce"
+    useCreateIndex: true
 })
     .then(res => {
         console.log("Databse connection is ready")
@@ -47,6 +46,6 @@ mongoose.connect(process.env.MONGODB_URL, {
         console.log(err)
     })
 
-app.listen(PORT, () => {
-    console.log(`server is running on port: http://localhost:${PORT}`)
-})
+
+
+module.exports = app;
