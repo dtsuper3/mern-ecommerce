@@ -7,12 +7,12 @@ const path = require('path');
 require("dotenv/config");
 const api = process.env.API_URL;
 const PORT = process.env.PORT || 3200;
-const productRouter = require("./routers/products");
-const categoriesRouter = require("./routers/categories");
-const usersRouter = require("./routers/users");
-const orderRouter = require("./routers/orders");
-const authJwt = require('./helpers/jwt');
-const errorHandler = require('./helpers/error-handler');
+const productRouter = require("./src/routers/products");
+const categoriesRouter = require("./src/routers/categories");
+const usersRouter = require("./src/routers/users");
+const orderRouter = require("./src/routers/orders");
+const authJwt = require('./src/helpers/jwt');
+const errorHandler = require('./src/helpers/error-handler');
 
 app.use(cors());
 app.options("*", cors());
