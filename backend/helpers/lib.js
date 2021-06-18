@@ -13,12 +13,13 @@ function checkFolderExist(folderPath) {
 
 function createFolder(folderPath) {
     const dir = path.join(__dirname, "../", folderPath);
-    console.log({ dir });
+    // console.log({ dir });
     if (!checkFolderExist(dir)) {
         fs.mkdirSync(dir, {
             recursive: true
         });
     }
+    return dir;
 }
 
 

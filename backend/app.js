@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require("dotenv/config");
 const api = process.env.API_URL;
 const PORT = process.env.PORT || 3200;
@@ -18,7 +19,9 @@ app.options("*", cors());
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(authJwt());
-
+// console.log(path.join(__dirname, 'public/uploads'))
+// app.use(express.static(path.join(__dirname, '/public')));
+app.use('/public/uploads', express.static(path.join(__dirname, '/public/uploads')));
 app.use(`${api}/products`, productRouter)
 app.use(`${api}/categories`, categoriesRouter)
 app.use(`${api}/users`, usersRouter)
