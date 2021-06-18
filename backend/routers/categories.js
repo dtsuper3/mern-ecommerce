@@ -52,12 +52,17 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-    let category = new Category({
-        name: req.body.name,
-        icon: req.body.icon,
-        color: req.body.color
-    })
+    const {
+        name,
+        icon,
+        color
+    } = req.body;
     try {
+        let category = new Category({
+            name,
+            icon,
+            color
+        })
         category = await category.save();
         if (!category) {
             return res.status(404).json({
@@ -65,8 +70,12 @@ router.post("/", async (req, res) => {
                 message: "category cannot be created!"
             });
         }
-        res.send(category);
-    } catch (err) {
+        res.status(200).json({
+            status: false,
+            message: "category created successfully",
+            data: category
+        });
+    } catch (error) {
         console.error(error.message)
         res.status(404).json({
             status: false,
@@ -76,12 +85,17 @@ router.post("/", async (req, res) => {
 })
 
 router.put("/:id", async (req, res) => {
+    const {
+        name,
+        icon,
+        color
+    } = req.body;
+    const { id } = req.params;
     try {
-        const { id } = req.params;
         const category = await Category.findByIdAndUpdate(id, {
-            name: req.body.name,
-            icon: req.body.icon,
-            color: req.body.color
+            name,
+            icon,
+            color
         }, {
             new: true
         })
@@ -104,6 +118,7 @@ router.put("/:id", async (req, res) => {
         });
     }
 })
+
 router.delete("/:id", async (req, res) => {
     const { id } = req.params;
     try {
